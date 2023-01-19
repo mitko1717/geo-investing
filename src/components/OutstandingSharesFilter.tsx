@@ -1,17 +1,12 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import { Range, getTrackBackground } from "react-range";
-
-type OutstandingSharesFilterProps = {
-  rtl: boolean;
-  rangeValues: any;
-  setRangeValues: Dispatch<SetStateAction<any>>;
-};
+import { TwoThumbsProps } from "./interfaces";
 
 const STEP = 1000000;
 const MIN = 0;
 const MAX = 500000000;
 
-const OutstandingSharesFilter: FC<OutstandingSharesFilterProps> = ({
+const OutstandingSharesFilter: FC<TwoThumbsProps> = ({
   rtl,
   rangeValues,
   setRangeValues,

@@ -1,26 +1,13 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Filters from "./Filters";
-
-type ContentProps = {
-  setNews: Dispatch<SetStateAction<string>>;
-  setIsOpenNews: Dispatch<SetStateAction<boolean>>;
-  setIsSettedNews: Dispatch<SetStateAction<boolean>>;
-  stories: any;
-  currentRecords: any;
-  setTitle: Dispatch<SetStateAction<any>>;
-  setPrice: Dispatch<SetStateAction<any>>;
-  initialCurrentRecords: any;
-  setCurrentRecords: Dispatch<SetStateAction<any>>;
-  setCategory: Dispatch<SetStateAction<any>>;
-  setSymbol: Dispatch<SetStateAction<any>>;
-  searchInputValue: string;
-};
+import TableCols from "./TableCols";
+import { ContentProps } from "./interfaces";
+import { IStory } from "@components/interfaces";
 
 const Content: FC<ContentProps> = ({
   setNews,
   setIsOpenNews,
   setIsSettedNews,
-  stories,
   currentRecords,
   setTitle,
   setPrice,
@@ -32,15 +19,9 @@ const Content: FC<ContentProps> = ({
 }) => {
   const newsDiv = `max-w-[1080px] w-[1080px]`;
   const container = `mx-12 mt-6 h-auto max-h-[650px] h-650px overflow-scroll scrollbar-hidden border-y-[#2A429A] border-y-solid border-y-[2px]`;
-  const spanTime = () => {
-    return `text-transparent-blackish w-[80px] min-w-[80px] inline-block text-center text-base`;
-  };
-  const spanSymbol = () => {
-    return `text-transparent-blackish w-[60px] min-w-[60px] inline-block text-center text-base mr-7`;
-  };
-  const spanCategory = () => {
-    return `text-transparent-blackish w-[120px] min-w-[120px] inline-block text-center text-base mr-4`;
-  };
+  const spanTime = `text-transparent-blackish w-[80px] min-w-[80px] inline-block text-center text-base`;
+  const spanSymbol = `text-transparent-blackish w-[60px] min-w-[60px] inline-block text-center text-base mr-7`;
+  const spanCategory = `text-transparent-blackish w-[120px] min-w-[120px] inline-block text-center text-base mr-4`;
   const spanNews = (pointer: boolean) => {
     return `scrollbar-hide text-transparent-blackish w-fit text-base h-auto overscroll-none overflow-hidden max-w-[1000px] ${
       pointer
@@ -49,7 +30,7 @@ const Content: FC<ContentProps> = ({
     }`;
   };
 
-  const [loading] = useState(true);
+  const loading = true;
   const [priceRangeValues, setRangeValues] = useState([0, 100]);
   const [marketCapsRangeValues, setMarketCapsRangeValues] = useState([
     0, 500000000,
@@ -63,11 +44,9 @@ const Content: FC<ContentProps> = ({
     }
   }, [priceRangeValues]);
 
-  const divForNews = () => {
-    return `w-full py-4 even:bg-gray-100 flex relative`;
-  };
+  const divForNews = `w-full py-4 even:bg-gray-100 flex relative`;
 
-  const setNewsText = (item: any) => {
+  const setNewsText = (item: IStory) => {
     setIsSettedNews(true);
     setNews(item.Body);
     setIsOpenNews(true);
@@ -89,28 +68,19 @@ const Content: FC<ContentProps> = ({
         setOutstandingSharesRangeValues={setOutstandingSharesRangeValues}
       />
       <div className={newsDiv}>
-        <div className={divForNews()}>
-          <span style={{ color: "#9AA0A6" }} className={spanTime()}>
-            Time
-          </span>
-          <span style={{ color: "#9AA0A6" }} className={spanSymbol()}>
-            Symbol
-          </span>
-          <span style={{ color: "#9AA0A6" }} className={spanCategory()}>
-            Category
-          </span>
-          <span style={{ color: "#9AA0A6" }} className={spanNews(false)}>
-            News
-          </span>
-        </div>
+        <TableCols
+          divForNews={divForNews}
+          spanTime={spanTime}
+          spanSymbol={spanSymbol}
+          spanCategory={spanCategory}
+          spanNews={spanNews}
+        />
+        {loading && currentRecords.length === 0 && <Loader />}
 
-        {loading && stories.length === 0 && <Loader />}
-
-        {currentRecords &&
-          currentRecords.length > 0 &&
+        {currentRecords.length > 0 &&
           currentRecords
             .filter(
-              (item: { Title: string; symbol: string; Body: string }) =>
+              (item) =>
                 item.Title.toLowerCase().includes(
                   searchInputValue.toLowerCase()
                 ) ||
@@ -120,35 +90,38 @@ const Content: FC<ContentProps> = ({
                 item.Body.toLowerCase().includes(searchInputValue.toLowerCase())
             )
             .filter(
-              (item: { price: number }) =>
+              (item) =>
                 +item.price >= priceRangeValues[0] &&
                 +item.price <= priceRangeValues[1]
             )
             .filter(
-              (item: { Market_Cap: number }) =>
+              (item) =>
                 +item.Market_Cap >= marketCapsRangeValues[0] &&
                 +item.Market_Cap <= marketCapsRangeValues[1]
             )
             .filter(
-              (item: { Outstanding_Shares: number }) =>
+              (item) =>
                 +item.Outstanding_Shares >= outstandingSharesRangeValues[0] &&
                 +item.Outstanding_Shares <= outstandingSharesRangeValues[1]
             )
-            .map((item: any, index: Number) => {
+            .map((item, index) => {
               let title = item.Title;
               let time = item.publicationTime
                 .replace("p. m.", "")
                 .replace("a. m.", "")
                 .split(" ")
-                .filter((f: any) => f);
-              time = time.splice(1, 1).toString();
-              time = time.split(":").splice(0, 2).join(":");
+                .filter((f) => f)
+                .splice(1, 1).toString()
+                .split(":").splice(0, 2).join(":");
 
               return (
-                <div key={`${title}${index}`} className={divForNews()}>
-                  <span className={spanTime()}>{time}</span>
-                  <span className={spanSymbol()}>{item.symbol}</span>
-                  <span style={{ fontSize: "12px" }} className={spanCategory()}>
+                <div
+                  key={`${title}${index}${Math.random()}`}
+                  className={divForNews}
+                >
+                  <span className={spanTime}>{time}</span>
+                  <span className={spanSymbol}>{item.symbol}</span>
+                  <span style={{ fontSize: "12px" }} className={spanCategory}>
                     {item.Category}
                   </span>
                   <span

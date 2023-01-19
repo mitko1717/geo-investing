@@ -1,8 +1,5 @@
 import { FC } from "react";
-type NewsBarProps = {
-  price: string;
-  category: string;
-};
+import { NewsBarProps } from "./interfaces";
 
 const NEWSBAR = [
   {

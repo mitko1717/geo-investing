@@ -4,11 +4,7 @@ import {
   getSplitted,
   replaceAllFunc,
 } from "./parsingFunctions";
-
-type StructuredNewsProps = {
-  news: string;
-  title: string;
-};
+import { StructuredNewsProps } from "./interfaces";
 
 const StructuredStory: FC<StructuredNewsProps> = ({ news, title }) => {
   const [newsPar, seNewsPar] = useState("");
@@ -25,7 +21,7 @@ const StructuredStory: FC<StructuredNewsProps> = ({ news, title }) => {
     return divContainer.textContent || divContainer.innerText || "";
   };
 
-  let text: any = "";
+  let text: string = "";
 
   useEffect(() => {
     // getting plain text from html
@@ -37,9 +33,9 @@ const StructuredStory: FC<StructuredNewsProps> = ({ news, title }) => {
       text.indexOf(`"`),
       text.indexOf(`"`, commentsIndex + 500)
     );
-    let strings: any = mySubString
+    let strings: string = mySubString
       .split(".")
-      .filter((s: string | any[]) => s.length > 30)
+      .filter((s: string) => s.length > 30)
       .join(".");
 
     setCommentsPar(strings);

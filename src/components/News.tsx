@@ -1,8 +1,9 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { FC, useState } from "react";
 import PrevBtn from "./Arrows/PrevButton";
 import Chart from "./Chart";
 import StructuredStory from "./StructuredStory";
 import NewsBar from "./NewsBar";
+import { NewsProps } from "./interfaces";
 
 const TABS = [
   { title: "MAIN VIEW" },
@@ -10,19 +11,7 @@ const TABS = [
   { title: "CHART" },
 ];
 
-type ContentProps = {
-  news: string;
-  setIsOpenNews: Dispatch<SetStateAction<boolean>>;
-  isSettedNews: boolean;
-  title: string;
-  price: string;
-  category: string;
-  symbol: string;
-  marketCap: string;
-  outstandingShares: string;
-};
-
-const News: FC<ContentProps> = ({
+const News: FC<NewsProps> = ({
   news,
   setIsOpenNews,
   isSettedNews,
@@ -30,8 +19,6 @@ const News: FC<ContentProps> = ({
   price,
   category,
   symbol,
-  marketCap,
-  outstandingShares,
 }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].title);
 

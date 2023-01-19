@@ -1,13 +1,5 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
-
-type MenuSubItemProps = {
-  subTitle: string;
-  subitems: any;
-  setActiveSubTab: Dispatch<SetStateAction<any>>;
-  activeSubTab: string;
-  subitem: any;
-  subOptions: any;
-};
+import { FC } from "react";
+import { MenuSubItemProps, ISubOption } from "./interfaces";
 
 const MenuSubItem: FC<MenuSubItemProps> = ({
   subTitle,
@@ -20,7 +12,7 @@ const MenuSubItem: FC<MenuSubItemProps> = ({
   const subSpan = `w-full block py-5 cursor-pointer hover:opacity-70 transition ease-in-out duration-300`;
   const aSubMenuClass = `cursor-pointer w-full block opacity-70 font-normal pb-2.5 px-4 hover:opacity-100 transition ease-in-out duration-300`;
 
-  const liSubMenuClass = (subTitle: string, subitems: any) => {
+  const liSubMenuClass = (subTitle: string, subitems: number) => {
     let num;
     if (subitems) {
       num = `${subitems * 16}px`;
@@ -49,13 +41,10 @@ const MenuSubItem: FC<MenuSubItemProps> = ({
         <li className={liSubMenuClass(subTitle, subitems)}>
           {subitem.subOption &&
             Array.isArray(subOptions) &&
-            subOptions.map((subOption: { subtitle: any; path: any }) => {
-              let subtitle = subOption.subtitle;
-              let path = subOption.path;
-
+            subOptions.map((subOption: ISubOption) => {
               return (
-                <a href={path} key={subtitle} className={aSubMenuClass}>
-                  {subtitle}
+                <a href={subOption.path} key={subOption.subtitle} className={aSubMenuClass}>
+                  {subOption.subtitle}
                 </a>
               );
             })}

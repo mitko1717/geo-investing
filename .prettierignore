@@ -1,0 +1,14 @@
+# Ignore artifacts:
+build
+theme
+node_modules
+public
+docker-compose.yml
+bitbucket-pipelines.yml
+Dockerfile
+.next
+storybook-static
+GitVersion.yml
+.devcontainer
+src/generated
+azure-pipelines.yaml

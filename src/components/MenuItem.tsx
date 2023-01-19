@@ -1,15 +1,6 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import MenuSubItem from "./MenuSubItem";
-
-type MenuItemProps = {
-  activeTab: string;
-  setActiveTab: Dispatch<SetStateAction<any>>;
-  activeSubTab: string;
-  setActiveSubTab: Dispatch<SetStateAction<any>>;
-  item: any;
-  title: string;
-  iconActive: any;
-};
+import { MenuItemProps, ISubOption } from "./interfaces";
 
 const MenuItem: FC<MenuItemProps> = ({
   activeTab,
@@ -81,8 +72,8 @@ const MenuItem: FC<MenuItemProps> = ({
       )}
       {item.type && item.type === "dropdown" && (
         <ul className={ulSubMenuClass(title)}>
-          {item.options.map(
-            (subitem: { title: any; subOptions: any; subOption: any }) => {
+          {item?.options.map(
+            (subitem: { title: string; subOptions: any; subOption: ISubOption }) => {
               let subTitle = subitem.title;
               let subOptions = subitem.subOptions ? subitem.subOptions : "";
               let subitems = Array.isArray(subOptions) && subOptions.length;

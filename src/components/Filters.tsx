@@ -1,18 +1,9 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import StockPriceFilter from "./StockPriceFilter";
 import MarketCapsFilter from "./MarketCapFilter";
 import OutstandingSharesFilter from "./OutstandingSharesFilter";
-
-type FiltersProps = {
-  rtl: boolean;
-  priceRangeValues: any;
-  setRangeValues: Dispatch<SetStateAction<any>>;
-  marketCapsRangeValues: any;
-  setMarketCapsRangeValues: Dispatch<SetStateAction<any>>;
-  outstandingSharesRangeValues: any;
-  setOutstandingSharesRangeValues: Dispatch<SetStateAction<any>>;
-};
+import { FiltersProps } from "./interfaces";
 
 const FILTERS = [
   {
@@ -33,7 +24,6 @@ const FILTERS = [
 ];
 
 const Filters: FC<FiltersProps> = ({
-  rtl,
   priceRangeValues,
   setRangeValues,
   marketCapsRangeValues,
@@ -41,19 +31,19 @@ const Filters: FC<FiltersProps> = ({
   outstandingSharesRangeValues,
   setOutstandingSharesRangeValues,
 }) => {
-  const [openSlugs, setOpenSlugs] = useState<any>([]);
+  const [openSlugs, setOpenSlugs] = useState<string[]>([]);
   const [isOpenFilter, setIsOpenFilter] = useState(false);
 
   useEffect(() => {
     setIsOpenFilter(openSlugs.length > 0 ? true : false);
   }, [openSlugs]);
 
-  const handleToggle = (slug: any) => {
-    if (!openSlugs.some((o: any) => o === slug)) {
+  const handleToggle = (slug: string) => {
+    if (!openSlugs.some((o) => o === slug)) {
       let newArr = [...openSlugs, slug];
       setOpenSlugs(newArr);
-    } else if (openSlugs.some((o: any) => o === slug)) {
-      const newArr = openSlugs.filter((i: any) => {
+    } else if (openSlugs.some((o: string) => o === slug)) {
+      const newArr = openSlugs.filter((i) => {
         return i !== slug;
       });
 
@@ -81,7 +71,7 @@ const Filters: FC<FiltersProps> = ({
               height={!isOpenFilter ? "auto" : item.height}
               duration={150}
             >
-              {openSlugs.some((i: string) => i === item.slug) &&
+              {openSlugs.some((i) => i === item.slug) &&
                 item.slug === FILTERS[0].slug &&
                 isOpenFilter && (
                   <div className={filter}>
@@ -92,7 +82,7 @@ const Filters: FC<FiltersProps> = ({
                     />
                   </div>
                 )}
-              {openSlugs.some((i: string) => i === item.slug) &&
+              {openSlugs.some((i) => i === item.slug) &&
                 item.slug === FILTERS[1].slug &&
                 isOpenFilter && (
                   <div className={filter}>
@@ -103,7 +93,7 @@ const Filters: FC<FiltersProps> = ({
                     />
                   </div>
                 )}
-              {openSlugs.some((i: string) => i === item.slug) &&
+              {openSlugs.some((i) => i === item.slug) &&
                 item.slug === FILTERS[2].slug &&
                 isOpenFilter && (
                   <div className={filter}>

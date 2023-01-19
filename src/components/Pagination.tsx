@@ -1,15 +1,9 @@
-import React, { Dispatch, FC, SetStateAction, useState } from "react";
+import React, { FC, useState } from "react";
 import NextBtn from "./Arrows/NextButton";
 import PrevBtn from "./Arrows/PrevButton";
+import { PaginationProps } from "@components/interfaces";
 
-type ContentProps = {
-  nPages: number;
-  currentPage: number;
-  setCurrentPage: Dispatch<SetStateAction<any>>;
-  filteredStories: any;
-};
-
-export const Pagination: FC<ContentProps> = ({
+export const Pagination: FC<PaginationProps> = ({
   nPages,
   currentPage,
   setCurrentPage,

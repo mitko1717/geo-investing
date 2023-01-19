@@ -6,6 +6,8 @@ import Header from "@components/Header";
 import Content from "@components/Content";
 import News from "@components/News";
 import { Pagination } from "@components/Pagination";
+import { IStory } from "@components/interfaces";
+import { obj } from "@lib/mockedStory";
 
 const requestHeaders: HeadersInit = new Headers();
 requestHeaders.set("Content-Type", "application/json;charset=utf-8");
@@ -15,32 +17,37 @@ requestHeaders.set("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 requestHeaders.set("referrerPolicy", "origin");
 
 const Home: NextPage = () => {
+  let initdata: IStory[] = [];
+  let starsArr = new Array(50).fill(0).forEach(() => initdata.push(obj));
+
   const [news, setNews] = useState<string>("");
   const [title, setTitle] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
+  const [price, setPrice] = useState<string | number>("4.2");
   const [symbol, setSymbol] = useState<string>("");
   const [category, setCategory] = useState<string>("");
-  const [marketCap, setMarketCap] = useState<string>("");
-  const [outstandingShares, setOutstandingShares] = useState<string>("");
   const [searchInputValue, setSearchInputValue] = useState<string>("");
   const [isOpenNews, setIsOpenNews] = useState<boolean>(false);
   const [isSettedNews, setIsSettedNews] = useState<boolean>(false);
-  const [stories, setStories] = useState<any>([]);
-  const [filteredStories, setFilteredStories] = useState<any>([]);
+  const [stories, setStories] = useState<IStory[]>([]);
+  const [filteredStories, setFilteredStories] = useState<IStory[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [recordsPerPage] = useState<number>(10);
   const [update, setUpdate] = useState(0);
-  const [currentRecords, setCurrentRecords] = useState<any>([]);
-  const [initialCurrentRecords, setInitialCurrentRecords] = useState<any>([]);
+  const [currentRecords, setCurrentRecords] = useState<IStory[]>(initdata);
+  const [initialCurrentRecords, setInitialCurrentRecords] = useState<IStory[]>(
+    []
+  );
 
   const getApiText = async () => {
     const res = await axios.post(
       `https://bot1.nmodes.com/bot/api/v1/managment-app?query=http://70.32.24.132:2022/getStories`,
       { headers: requestHeaders }
     );
-
-    let data = res.data.data.reverse();
-    return data;
+    if (Array.isArray(res.data.data)) {
+      return res.data.data.reverse();
+    } else {
+      return initdata;
+    }
   };
 
   const indexOfLastRecord = currentPage * recordsPerPage;
@@ -58,10 +65,10 @@ const Home: NextPage = () => {
   const nPages: number = Math.ceil(stories.length / recordsPerPage);
 
   const getData = async () => {
-    let data = await getApiText();
+    let data: IStory[] = (await getApiText()) || [];
 
-    if (data && data.length > 0) {
-      data = data.map((item: any) => {
+    if (Array.isArray(data) && data.length > 0) {
+      data = data.map((item: IStory) => {
         if (+item.price === -999) {
           return { ...item, price: 0 };
         } else if (+item["Market_Cap"] === -999) {
@@ -73,6 +80,9 @@ const Home: NextPage = () => {
 
       setStories(data);
       setFilteredStories(data);
+    } else {
+      setStories(initdata);
+      setFilteredStories(initdata);
     }
   };
 
@@ -82,7 +92,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setUpdate((prev) => prev + 1);
+      setUpdate((prev: number) => prev + 1);
     }, 20000);
     return () => clearTimeout(timer);
   });
@@ -100,7 +110,6 @@ const Home: NextPage = () => {
             setNews={setNews}
             setIsOpenNews={setIsOpenNews}
             setIsSettedNews={setIsSettedNews}
-            stories={stories}
             currentRecords={currentRecords}
             setTitle={setTitle}
             setPrice={setPrice}
@@ -120,8 +129,6 @@ const Home: NextPage = () => {
             price={price}
             category={category}
             symbol={symbol}
-            marketCap={marketCap}
-            outstandingShares={outstandingShares}
           />
         )}
         {!isOpenNews && stories.length > 0 && (

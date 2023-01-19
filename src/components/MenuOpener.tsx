@@ -1,9 +1,5 @@
-import { Dispatch, FC, SetStateAction } from "react";
-
-type MenuOpenerProps = {
-  isOpenMenu: boolean;
-  setIsOpenMenu: Dispatch<SetStateAction<any>>;
-};
+import { FC } from "react";
+import { MenuOpenerProps } from "./interfaces";
 
 const MenuOpener: FC<MenuOpenerProps> = ({ isOpenMenu, setIsOpenMenu }) => {
   return (

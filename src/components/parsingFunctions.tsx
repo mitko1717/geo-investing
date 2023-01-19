@@ -111,14 +111,14 @@ export const getCompanyName = (str: any) => {
     .filter((word: string) => word.toLowerCase() !== "source")
     .join(" ")
     .split(" ")
-    .filter((n: any) => n)
+    .filter((n: string) => n)
     .join(" ")
     .replaceAll("Corporation", "")
     .replaceAll("Limited", "")
     .replaceAll(new RegExp("\\b" + "Corp" + "\\b", "gi"), "")
     .replaceAll(/\.|\,/g, "")
     .split(" ")
-    .filter((n: any) => n)
+    .filter((n: string) => n)
     .join(" ");
 
   return nameOfCompany;

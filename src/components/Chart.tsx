@@ -3,10 +3,7 @@ import {
   AdvancedRealTimeChart,
   AdvancedChartBarStyle,
 } from "react-tradingview-widget-components";
-
-type ChartProps = {
-  symbol: string;
-};
+import { ChartProps } from "./interfaces";
 
 const modes = [
   { title: "DARK MODE", bool: true },

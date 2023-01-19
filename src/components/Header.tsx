@@ -1,13 +1,9 @@
-import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
+import { ChangeEvent, FormEvent, FC } from "react";
 import Image from "next/image";
 import logo from "../../public/assets/images/graphic.png";
+import { HeaderProps } from "./interfaces";
 
-type ContentProps = {
-  setCurrentPage: Dispatch<SetStateAction<any>>;
-  setSearchInputValue: Dispatch<SetStateAction<any>>;
-};
-
-const Header: FC<ContentProps> = ({ setCurrentPage, setSearchInputValue }) => {
+const Header: FC<HeaderProps> = ({ setCurrentPage, setSearchInputValue }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     let val = e.target.value;
@@ -15,7 +11,7 @@ const Header: FC<ContentProps> = ({ setCurrentPage, setSearchInputValue }) => {
     setSearchInputValue(val);
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 

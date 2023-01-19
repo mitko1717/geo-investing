@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
 import { MENU } from "../lib/MENU";
+import { IMenu } from "./interfaces";
 import MenuItem from "./MenuItem";
 
 const Menu: FC = () => {
@@ -9,7 +10,7 @@ const Menu: FC = () => {
   return (
     <div className="text-white">
       <ul>
-        {MENU.map((item) => {
+        {MENU.map((item: IMenu) => {
           let title = item.title;
           let iconActive = item.iconActive;
 
