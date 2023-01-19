@@ -20,7 +20,7 @@ export default Home;
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const result = await fetch(`https://geo-investi.vercel.app/api/getStories`);
+    const result = await fetch(`https://geo-invest.vercel.app/api/getStories`);
     const data = await result.json();
 
     return {
