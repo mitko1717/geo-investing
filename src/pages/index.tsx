@@ -1,28 +1,33 @@
-import type { GetServerSideProps, NextPage } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import Stories from "../components/Stories";
 import { IStory } from "@components/interfaces";
 
 type IData = {
-  stories: IStory[];
+  data: IStory[];
 };
 
-const Home: NextPage<{ data: IData }> = (props) => {
-  let stories: IStory[] = props?.data?.stories
-
+const Home: NextPage<{ data: IData }> = (props) => {  
+  let stories: IStory[] = props?.data?.data  
+  
   return (
-    <>
       <Stories storiesData={stories} />
-    </>
   );
 };
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   try {
-    const result = await fetch(`https://geo-invest.vercel.app/api/getStories`);
-    const data = await result.json();
-
+    let result = await fetch(`https://bot1.nmodes.com/bot/api/v1/managment-app?query=http://70.32.24.132:2022/getStories`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+    });
+    
+    let data = await result.json();
+    data.data = data.data.reverse()
+    
     return {
       props: { data }
     };

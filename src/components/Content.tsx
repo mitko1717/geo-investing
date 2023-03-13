@@ -16,7 +16,7 @@ const Content: FC<ContentProps> = ({
   setCategory,
   setSymbol,
   searchInputValue,
-}) => {
+}) => {  
   const newsDiv = `max-w-[1080px] w-[1080px]`;
   const container = `mx-12 mt-6 h-auto max-h-[650px] h-650px overflow-scroll scrollbar-hidden border-y-[#2A429A] border-y-solid border-y-[2px]`;
   const spanTime = `text-transparent-blackish w-[80px] min-w-[80px] inline-block text-center text-base`;
@@ -36,7 +36,7 @@ const Content: FC<ContentProps> = ({
     0, 500000000,
   ]);
   const [outstandingSharesRangeValues, setOutstandingSharesRangeValues] =
-    useState([0, 500000000]);
+    useState([0, 1200000000]);
 
   useEffect(() => {
     if (priceRangeValues[0] === 0 && priceRangeValues[1] === 100) {
@@ -77,7 +77,7 @@ const Content: FC<ContentProps> = ({
         />
         {loading && currentRecords.length === 0 && <Loader />}
 
-        {currentRecords.length > 0 &&
+        {currentRecords && currentRecords.length > 0 &&
           currentRecords
             .filter(
               (item) =>
@@ -113,7 +113,7 @@ const Content: FC<ContentProps> = ({
                 .filter((f) => f)
                 .splice(1, 1).toString()
                 .split(":").splice(0, 2).join(":");
-
+                
               return (
                 <div
                   key={`${title}${index}${Math.random()}`}

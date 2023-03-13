@@ -22,7 +22,7 @@ interface StoriesDataProps {
 let initdata: IStory[] = [];
 let starsArr = new Array(50).fill(0).forEach(() => initdata.push(obj));
 
-export default function Stories({ storiesData }: StoriesDataProps) {        
+export default function Stories({ storiesData }: StoriesDataProps) {
   const [news, setNews] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<string | number>("4.2");
@@ -35,21 +35,21 @@ export default function Stories({ storiesData }: StoriesDataProps) {
   const [filteredStories, setFilteredStories] = useState<IStory[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [recordsPerPage] = useState<number>(10);
-  const [update, setUpdate] = useState(0);
-  const [currentRecords, setCurrentRecords] = useState<IStory[]>(initdata);
+  const [update, setUpdate] = useState<number>(0);
+  const [currentRecords, setCurrentRecords] = useState<IStory[]>([]);
   const [initialCurrentRecords, setInitialCurrentRecords] = useState<IStory[]>(
     []
   );
 
-  const getApiText = async () => {
-    let res = await axios.post(
-      `https://bot1.nmodes.com/bot/api/v1/managment-app?query=http://70.32.24.132:2022/getStories`,
-      { headers: requestHeaders }
-    );
-    if (Array.isArray(res?.data.data)) {
-      return res?.data.data.reverse();
-    } else {
-      return initdata;
+  const getApiText = async () => {  
+    try {
+      let res = await axios.post(
+        `https://bot1.nmodes.com/bot/api/v1/managment-app?query=http://70.32.24.132:2022/getStories`,
+        { headers: requestHeaders }
+      );
+      if (res?.data?.data && Array.isArray(res?.data.data)) return res?.data.data.reverse();
+    } catch (error) {
+      return initdata
     }
   };
 
@@ -69,27 +69,31 @@ export default function Stories({ storiesData }: StoriesDataProps) {
 
   const getData = async () => {
     let data: IStory[]
+    // let data: IStory[] = await getApiText()
     
-    if (!storiesData || !Array.isArray(storiesData) || storiesData.length === 0) {
-        data = (await getApiText()) || [];
-    } else data = storiesData
-
-    if (Array.isArray(data) && data.length > 0) {
+    if (Array.isArray(storiesData) && storiesData.length > 0) {
+        data = storiesData
+    } else data = (await getApiText()) || [];
+    
+    if (Array.isArray(data) && data.length > 0) {      
       data = data.map((item: IStory) => {
-        if (+item.price === -999) {
-          return { ...item, price: 0 };
-        } else if (+item["Market_Cap"] === -999) {
-          return { ...item, Market_Cap: 0 };
-        } else if (+item["Outstanding_Shares"] === -999) {
-          return { ...item, Outstanding_Shares: 0 };
-        } else return item;
+        if (+item.price === -999) {          
+          item = { ...item, price: 0 };
+        } 
+        if (+item["Market_Cap"] === -999) {
+          item = { ...item, Market_Cap: 0 };
+        } 
+        if (+item["Outstanding_Shares"] === -999) {
+          item = { ...item, Outstanding_Shares: 0 };
+        }
+        return item;
       });
 
       setStories(data);
       setFilteredStories(data);
     } else {
-      setStories(initdata);
-      setFilteredStories(initdata);
+      setStories([]);
+      setFilteredStories([]);
     }
   };
 

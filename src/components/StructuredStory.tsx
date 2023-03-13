@@ -3,7 +3,7 @@ import {
   getCompanyName,
   getSplitted,
   replaceAllFunc,
-} from "./parsingFunctions";
+} from "../helpers/parsingFunctions";
 import { StructuredNewsProps } from "./interfaces";
 
 const StructuredStory: FC<StructuredNewsProps> = ({ news, title }) => {

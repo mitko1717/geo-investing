@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import NextBtn from "./Arrows/NextButton";
 import PrevBtn from "./Arrows/PrevButton";
 import { PaginationProps } from "@components/interfaces";
+import { v4 as uuidv4 } from 'uuid';
 
 export const Pagination: FC<PaginationProps> = ({
   nPages,
@@ -44,10 +45,10 @@ export const Pagination: FC<PaginationProps> = ({
   }
 
   const pageNumbers = pages.map((page) => {
-    if (page <= maxPageLimit && page > minPageLimit) {
+    if (page <= maxPageLimit && page > minPageLimit) {      
       return (
         <span
-          key={page}
+          key={uuidv4()}
           onClick={() => setCurrentPage(page)}
           className={`w-[24px] h-[24px] text-center cursor-pointer ${
             currentPage === page
@@ -62,7 +63,7 @@ export const Pagination: FC<PaginationProps> = ({
           {page}
         </span>
       );
-    } else return <span className="hidden"></span>;
+    } else return <span key={uuidv4()} className="hidden"></span>;
   });
 
   let pageIncrementEllipses = null;

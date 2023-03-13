@@ -4,7 +4,7 @@ import { TwoThumbsProps } from "./interfaces";
 
 const STEP = 1000000;
 const MIN = 0;
-const MAX = 500000000;
+const MAX = 1200000000;
 
 const OutstandingSharesFilter: FC<TwoThumbsProps> = ({
   rtl,
