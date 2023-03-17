@@ -125,9 +125,16 @@ export type StructuredNewsProps = {
 };
 
 export type NewsBarProps = {
+  basicAIClassification: string;
   price: string | number;
   category: string;
 };
+
+export type BasicAIProps = {
+  basicAIClassification: string,
+  item: any,
+  classesNames: string
+}
 
 export type ChartProps = {
   symbol: string;

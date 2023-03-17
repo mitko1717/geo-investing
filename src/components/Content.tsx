@@ -122,7 +122,8 @@ const Content: FC<ContentProps> = ({
                   <span className={spanTime}>{time}</span>
                   <span className={spanSymbol}>{item.symbol}</span>
                   <span style={{ fontSize: "12px" }} className={spanCategory}>
-                    {item.Category}
+                    {/* {item.Category} */}
+                    Earnings
                   </span>
                   <span
                     onClick={() => {
